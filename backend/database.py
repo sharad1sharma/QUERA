@@ -7,6 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = BASE_DIR.parent
 
 # Support serverless / read-only environments like Vercel
+# Railway has a persistent filesystem so we use normal project directories there
 if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
     DB_DIR = Path("/tmp/database")
     UPLOADS_DIR = Path("/tmp/uploads")
