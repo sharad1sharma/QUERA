@@ -299,15 +299,17 @@ def get_qr(short_code):
     if row["visibility"] == "private" and not is_owner_or_admin(row, get_current_user()):
         abort(403)
 
-    qr = get_qr_by_resource(row["id"])
-    if not qr:
-        abort(404)
-
-    qr_path = QR_DIR / qr["qr_path"]
-    if not qr_path.exists():
-        abort(404)
-
-    return send_file(qr_path, mimetype="image/png")
+    # Generate QR on-the-fly in memory — works on Vercel serverless where
+    # /tmp is ephemeral and QR files saved during a previous invocation
+    # are no longer present. This is always fresh and needs no disk I/O.
+    import io
+    import qrcode as _qrcode
+    target_url = build_short_url(short_code)
+    img = _qrcode.make(target_url)
+    buf = io.BytesIO()
+    img.save(buf, format="PNG")
+    buf.seek(0)
+    return send_file(buf, mimetype="image/png")
 
 
 # ---------------------------------------------------------------------------
