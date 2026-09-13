@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand"><span>🔗</span> URL SHORTENER</div>
+    <nav>
+        <a href="#home">Home</a>
+        <a href="#history">History</a>
+        <a href="#stats">Statistics</a>
+        <a href="#about">About</a>
+        <span id="navAuthSlot"></span>
+    </nav>
+</header>
+
+<main id="home" class="container">
+    <section class="hero card">
+        <h1>🔗 Shorten Your Long URL</h1>
+        <p>Enter a long URL to generate a short and easy link. Log in to also share images, videos and files with QR codes, and to keep your own private links. <a href="/dashboard.html">Go to Dashboard →</a></p>
+
+        <div class="shorten-row">
+            <input id="urlInput" type="url"
+                   placeholder="https://www.example.com/very-long-url">
+            <button id="shortenBtn" class="primary">Shorten URL</button>
+        </div>
+
+        <p id="message" class="message"></p>
+
+        <div id="result" class="result hidden">
+            <div>
+                <h3>✅ Your Shortened URL</h3>
+                <a id="shortUrl" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+            <div class="result-actions">
+                <button id="copyBtn" class="success">Copy</button>
+                <button id="openBtn" class="primary">Open URL</button>
+                <button id="shareBtn" class="secondary">Share</button>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <button id="quickCopy">📋 Copy</button>
+            <button id="quickOpen">↗ Open URL</button>
+            <button id="quickShare">↗ Share</button>
+            <button id="refreshBtn">↻ Refresh</button>
+            <button id="clearBtn" class="danger">🗑 Clear History</button>
+        </div>
+    </section>
+
+    <section id="history" class="card">
+        <div class="section-head">
+            <div>
+                <h2>🕘 URL History</h2>
+                <p>Manage your previously shortened URLs.</p>
+            </div>
+            <div class="history-controls">
+                <input id="searchInput" placeholder="Search URL or short code...">
+                <button id="historyRefresh">↻ Refresh</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Original URL</th>
+                        <th>Short URL</th>
+                        <th>Created At</th>
+                        <th>Clicks</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="stats" class="stats-grid">
+        <div class="stat card"><span>🔗</span><div><small>Total URLs</small><strong id="totalUrls">0</strong></div></div>
+        <div class="stat card"><span>🖱️</span><div><small>Total Clicks</small><strong id="totalClicks">0</strong></div></div>
+        <div class="stat card"><span>📅</span><div><small>Created Today</small><strong id="createdToday">0</strong></div></div>
+        <div class="stat card"><span>🌐</span><div><small>Active Links</small><strong id="activeLinks">0</strong></div></div>
+    </section>
+
+    <section id="about" class="card about">
+        <h2>About</h2>
+
+        <p>This project was developed by <b>Tech Coderz</b> as part of the <b>OSEN CodeBlitz 2.0 2026</b>, an offline hackathon in Lucknow that brings together students, developers, designers, innovators, and builders to turn ideas into working solutions.<br><br>
+
+          The project focuses on providing a secure and user-friendly platform for creating and managing shortened<b> URLs</b>and<b> QR codes </b>for <b>URLs, images, videos, </b>and<b> files</b>. It includes authentication, public/private access, resource ownership, and administrative management features.<br><br>
+          As <b>TECH CODERZ</b>, we are focused on building practical, secure, and innovative technology solutions using modern web development, <b>AI & Automation</b>, and intelligent digital systems.<br><br>
+           <b>Developed by:</b> TECH  CODERZ<br><br>
+           <b>Event:</b> OSEN CodeBlitz 2.0 2026<br><br>
+           <b>Location:</b> Lucknow</p><br><br>
+
+        <p>We <b>SHARAD SHARMA</b> , <b>SUVOJEET NANDI</b>and <b>PRIYANSHU SRIVASTAVA</b> — a Computer Science Engineering student, Python Developer, and aspiring Backend & AI Engineer. ⚡<br><br>
+
+        I’m passionate about building practical software and understanding how applications work behind the scenes. My current focus is on <b>Python, Backend Development, REST APIs, Flask, SQL, Databases, and AI Engineering. 🧑‍💻</b><br><br>
+
+        I follow a learn-by-building approach, where I turn concepts into real projects to strengthen my programming, problem-solving, API development, database management, and software engineering skills. 🛠️<br><br>
+
+        My technical interests include <b>Python 🐍, Flask ⚗️, REST APIs 🔗, SQL 🗃️, HTML/CSS 🎨, JavaScript ⚡, Git 🌿, and AI/ML 🧠.</b><br><br>
+
+        I’m continuously working on improving my technical foundation, learning industry practices, and gaining real-world development experience through projects and internships. 📈<br><br>
+
+        <b>🔗 Featured Project — Simple URL Shortener:</b><br><br>
+
+        As part of my Dveloper journey, I’m developing a Simple URL Shortener using Python, Flask, REST APIs, and SQLite.<br><br>
+
+        The application converts a long URL into a short, shareable link. When a user submits a URL, the backend generates a unique short code, stores the URL mapping in the database, and provides a shortened URL. 🔐<br><br>
+
+        When the shortened URL is accessed, the Flask backend looks up the corresponding original URL and automatically redirects the user to it. ↗️<br><br>
+
+        <b>Core concepts:</b><br><br>
+        🔗 REST API <b>→</b> 🌐 Flask Routing <b>→</b> 📡 HTTP Requests <b>→</b> 🗃️ SQLite <b>→</b> 🔐 Unique Code Generation <b>→</b> ✅ URL Validation <b>→</b> ↗️ HTTP Redirects</p><br>
+    </section>
+    <footer>
+        <div class="wrap header-inner">
+            <p>All Rights Reserved. All other trademarks and copyrights are the property of their respective holders.</p>
+            <p>Copyright © 2026 Sharad Sharma.</p>
+        </div>
+    </footer>
+</main>
+
+<script src="js/auth-common.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

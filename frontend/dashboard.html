@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - URL Shortener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand"><span>🔗</span> URL SHORTENER</div>
+    <nav id="mainNav">
+        <a href="/">Home</a>
+        <span id="navAuthSlot"></span>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="card">
+        <h1>📋 My Dashboard</h1>
+        <p>Create a shortened URL, or share an image, video, or file &mdash; each gets its own short link and QR code.</p>
+
+        <div class="create-tabs">
+            <button type="button" class="tab-btn active" data-tab="url">🔗 URL</button>
+            <button type="button" class="tab-btn" data-tab="image">🖼️ Image</button>
+            <button type="button" class="tab-btn" data-tab="video">🎬 Video</button>
+            <button type="button" class="tab-btn" data-tab="file">📄 File</button>
+        </div>
+
+        <form id="urlForm" class="create-form" data-panel="url">
+            <input id="urlInput" type="url" placeholder="https://www.example.com/very-long-url" required>
+            <select id="urlVisibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+            </select>
+            <button type="submit" class="primary">Shorten URL</button>
+        </form>
+
+        <form id="imageForm" class="create-form hidden" data-panel="image">
+            <input id="imageInput" type="file" accept="image/*" required>
+            <select id="imageVisibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+            </select>
+            <button type="submit" class="primary">Upload Image</button>
+        </form>
+
+        <form id="videoForm" class="create-form hidden" data-panel="video">
+            <input id="videoInput" type="file" accept="video/*" required>
+            <select id="videoVisibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+            </select>
+            <button type="submit" class="primary">Upload Video</button>
+        </form>
+
+        <form id="fileForm" class="create-form hidden" data-panel="file">
+            <input id="fileInput" type="file" required>
+            <select id="fileVisibility">
+                <option value="public">🌐 Public</option>
+                <option value="private">🔒 Private</option>
+            </select>
+            <button type="submit" class="primary">Upload File</button>
+        </form>
+
+        <p id="createMessage" class="message"></p>
+
+        <div id="result" class="result hidden">
+            <div>
+                <h3>✅ Short link ready</h3>
+                <a id="shortUrl" target="_blank" rel="noopener noreferrer"></a>
+            </div>
+            <div class="result-actions">
+                <button id="copyBtn" class="success">Copy</button>
+                <img id="qrPreview" class="qr-preview hidden" alt="QR code">
+            </div>
+        </div>
+    </section>
+
+    <section id="stats" class="stats-grid">
+        <div class="stat card"><span>📦</span><div><small>My Resources</small><strong id="statResources">0</strong></div></div>
+        <div class="stat card"><span>🔗</span><div><small>My URLs</small><strong id="statUrls">0</strong></div></div>
+        <div class="stat card"><span>🖱️</span><div><small>Total Clicks</small><strong id="statClicks">0</strong></div></div>
+    </section>
+
+    <section class="card">
+        <h2>🤖 AI Assistant</h2>
+        <p>Ask how to use any feature of this platform.</p>
+        <form id="aiAssistantForm" class="ai-assistant-form">
+            <input id="aiQuestion" type="text" placeholder="e.g. How do I make my file private?" maxlength="500" required>
+            <button type="submit" class="primary">Ask</button>
+        </form>
+        <div id="aiAnswer" class="ai-answer hidden"></div>
+    </section>
+
+    <section class="card">
+        <div class="section-head">
+            <div>
+                <h2>🗂️ My Resources</h2>
+                <p>Manage everything you have created.</p>
+            </div>
+            <div class="history-controls">
+                <input id="searchInput" placeholder="Search by name, URL or short code...">
+                <button id="refreshBtn">↻ Refresh</button>
+            </div>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Type</th>
+                        <th>Name / Destination</th>
+                        <th>Short URL</th>
+                        <th>Visibility</th>
+                        <th>Clicks</th>
+                        <th>AI</th>
+                        <th>QR</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resourceBody"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="js/auth-common.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

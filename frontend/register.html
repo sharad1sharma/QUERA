@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - URL Shortener</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="brand"><span>🔗</span> URL SHORTENER</div>
+    <nav>
+        <a href="/">Home</a>
+        <span id="navAuthSlot"></span>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="card auth-card">
+        <h1>Create your account</h1>
+        <p>Register to shorten URLs and share images, videos and files with QR codes.</p>
+
+        <form id="registerForm" class="auth-form">
+            <label for="username">Username</label>
+            <input id="username" type="text" placeholder="jane_doe" required minlength="3" maxlength="32">
+
+            <label for="email">Email</label>
+            <input id="email" type="email" placeholder="jane@example.com" required>
+
+            <label for="password">Password</label>
+            <input id="password" type="password" placeholder="At least 8 characters" required minlength="8">
+
+            <button type="submit" class="primary">Register</button>
+        </form>
+
+        <p id="message" class="message"></p>
+        <p class="auth-switch">Already have an account? <a href="/login.html">Login here</a></p>
+    </section>
+</main>
+
+<script src="js/auth-common.js"></script>
+<script>
+    renderAuthNav("navAuthSlot");
+
+    const form = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        message.textContent = "";
+
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const submitBtn = form.querySelector("button[type=submit]");
+
+        setButtonLoading(submitBtn, true);
+        try {
+            const response = await fetch(`${API}/auth/register`, {
+                method: "POST",
+                credentials: "include",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, email, password })
+            });
+            const result = await response.json();
+
+            if (!response.ok) throw new Error(result.error || "Registration failed.");
+
+            window.location.href = "/dashboard.html";
+        } catch (error) {
+            message.textContent = error.message;
+            message.style.color = "#d32f2f";
+            setButtonLoading(submitBtn, false);
+        }
+    });
+</script>
+</body>
+</html>

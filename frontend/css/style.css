@@ -1,0 +1,760 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --yt-black: #0f0f0f;
+    --yt-black-soft: #181818;
+    --yt-red: #ff0000;
+    --yt-red-dark: #cc0000;
+    --yt-red-darker: #990000;
+    --yt-white: #ffffff;
+    --yt-gray-bg: #f9f9f9;
+    --yt-gray-border: #e5e5e5;
+    --yt-text-muted: #606060;
+    --shadow-sm: 0 2px 6px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 6px 16px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 12px 28px rgba(0, 0, 0, 0.18);
+}
+
+body {
+    font-family: "Roboto", Arial, sans-serif;
+    background: var(--yt-gray-bg);
+    color: var(--yt-black);
+}
+
+/* ---------- Topbar ---------- */
+.topbar {
+    min-height: 72px;
+    padding: 0 4%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--yt-black);
+    color: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.25);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+}
+
+.brand {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+}
+
+.brand span {
+    margin-right: 8px;
+    color: var(--yt-red);
+    filter: drop-shadow(0 0 6px rgba(255, 0, 0, 0.5));
+}
+
+nav {
+    display: flex;
+    align-items: center;
+    gap: 25px;
+}
+
+nav a {
+    color: rgba(255, 255, 255, 0.75);
+    text-decoration: none;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 8px;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+nav a:hover {
+    color: #fff;
+    background: rgba(255, 0, 0, 0.18);
+    transform: translateY(-2px);
+}
+
+nav a::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background: var(--yt-red);
+    border-radius: 2px;
+    transition: all 0.25s ease;
+    transform: translateX(-50%);
+}
+
+nav a:hover::after {
+    width: 60%;
+}
+
+/* ---------- Layout ---------- */
+.container {
+    width: min(1450px, 94%);
+    margin: 25px auto;
+}
+
+.card {
+    background: white;
+    padding: 24px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--yt-gray-border);
+    transition: box-shadow 0.25s ease;
+}
+
+.hero {
+    text-align: center;
+}
+
+.hero h1 {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.hero > p {
+    color: var(--yt-text-muted);
+    margin-bottom: 24px;
+}
+
+.shorten-row {
+    display: flex;
+    align-items: stretch;
+    gap: 14px;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    font-size: 15px;
+    outline: none;
+    background: #fff;
+    color: var(--yt-black);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus {
+    border-color: var(--yt-red);
+    box-shadow: 0 0 0 3px rgba(255, 0, 0, 0.12);
+}
+
+/* =====================================================
+   BUTTONS — unified sizing, alignment, hover, 3D depth
+   ===================================================== */
+button {
+    /* Default button color is now the same red as .primary, so every
+       button across the app matches unless a semantic class (success,
+       secondary, danger, edit, delete) overrides it on purpose. */
+    --btn-bg-top: #ff2b2b;
+    --btn-bg-bottom: var(--yt-red);
+    --btn-edge: var(--yt-red-darker);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-shrink: 0;
+    height: 46px;
+    width: 170px;
+    min-width: 170px;
+    max-width: 170px;
+    padding: 0 20px;
+    border: 0;
+    border-radius: 10px;
+    font-size: 14.5px;
+    font-weight: 700;
+    line-height: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    color: #fff;
+    background: linear-gradient(180deg, var(--btn-bg-top), var(--btn-bg-bottom));
+    /* Deeper, layered shadow + inner highlight = stronger 3D "raised button" look */
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.45),
+        inset 0 -10px 14px rgba(0, 0, 0, 0.12),
+        0 4px 0 var(--btn-edge),
+        0 10px 18px rgba(0, 0, 0, 0.22);
+    transform: translateY(0) scale(1);
+    transform-style: preserve-3d;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.2s ease, filter 0.2s ease;
+}
+
+button:hover {
+    transform: translateY(-3px) scale(1.03);
+    filter: brightness(1.06);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.5),
+        inset 0 -10px 14px rgba(0, 0, 0, 0.1),
+        0 7px 0 var(--btn-edge),
+        0 16px 24px rgba(0, 0, 0, 0.28);
+}
+
+button:active {
+    transform: translateY(2px) scale(0.98);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.3),
+        inset 0 -6px 10px rgba(0, 0, 0, 0.15),
+        0 1px 0 var(--btn-edge),
+        0 3px 8px rgba(0, 0, 0, 0.18);
+}
+
+button:focus-visible {
+    outline: 2px solid var(--yt-red);
+    outline-offset: 2px;
+}
+
+button:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none !important;
+    filter: none !important;
+}
+
+/* Primary = YouTube red (kept as an explicit class for clarity, same as the
+   button default now, so existing markup that uses class="primary" still
+   looks identical). */
+.primary {
+    --btn-bg-top: #ff2b2b;
+    --btn-bg-bottom: var(--yt-red);
+    --btn-edge: var(--yt-red-darker);
+    color: #fff;
+}
+
+.primary:hover {
+    --btn-bg-top: #ff4444;
+    --btn-bg-bottom: #e60000;
+}
+
+/* ---------- Button loading spinner ---------- */
+.btn-loader {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 3px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+    to { transform: rotate(360deg); }
+}
+
+button.is-loading {
+    cursor: not-allowed;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* Success — kept green but same 3D system */
+.success {
+    --btn-bg-top: #27c96b;
+    --btn-bg-bottom: #18a957;
+    --btn-edge: #0f7a3d;
+    color: #fff;
+}
+
+/* Secondary — near-black, YouTube "subscribed" style */
+.secondary {
+    --btn-bg-top: #2b2b2b;
+    --btn-bg-bottom: var(--yt-black);
+    --btn-edge: #000000;
+    color: #fff;
+}
+
+/* Danger — now uses the exact same red as every other button (primary,
+   default, edit/delete's parent, etc.) since the whole app is already
+   red-themed. Kept as its own class so semantic markup (class="danger")
+   still reads clearly in the HTML, it just no longer looks like a
+   different, muted shade of red. */
+.danger {
+    --btn-bg-top: #ff2b2b;
+    --btn-bg-bottom: var(--yt-red);
+    --btn-edge: var(--yt-red-darker);
+    color: #fff;
+}
+
+.danger:hover {
+    --btn-bg-top: #ff4444;
+    --btn-bg-bottom: #e60000;
+}
+
+.result-actions,
+.quick-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.quick-actions {
+    margin-top: 22px;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.message {
+    margin: 10px 0;
+    min-height: 20px;
+}
+
+.section-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.section-head p {
+    color: var(--yt-text-muted);
+    margin-top: 5px;
+}
+
+.history-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 400px;
+}
+
+.history-controls input {
+    height: 46px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 850px;
+}
+
+th, td {
+    padding: 14px 10px;
+    border-bottom: 1px solid var(--yt-gray-border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+th {
+    background: #f7f7f7;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    color: var(--yt-text-muted);
+}
+
+tbody tr {
+    transition: background 0.2s ease;
+}
+
+tbody tr:hover {
+    background: #fafafa;
+}
+
+td a {
+    color: var(--yt-red-dark);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+td a:hover {
+    text-decoration: underline;
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Compact action buttons inside tables — same 3D system, smaller footprint.
+   These are intentionally exempt from the site-wide fixed button width so
+   they still fit neatly inside table rows. */
+.actions button {
+    height: 36px;
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    padding: 0 14px;
+    font-size: 13px;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 2px 0 var(--btn-edge),
+        0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.actions button:hover {
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        0 3px 0 var(--btn-edge),
+        0 8px 12px rgba(0, 0, 0, 0.14);
+}
+
+.edit {
+    --btn-bg-top: #ffd873;
+    --btn-bg-bottom: #ffc233;
+    --btn-edge: #b8860b;
+    color: #5a3d00;
+}
+
+.delete {
+    --btn-bg-top: #ff6b6b;
+    --btn-bg-bottom: #ef4444;
+    --btn-edge: #991b1b;
+    color: #fff;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 18px;
+}
+
+.stat {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.stat > span {
+    font-size: 30px;
+}
+
+.stat small {
+    display: block;
+    color: var(--yt-text-muted);
+    margin-bottom: 5px;
+}
+
+.stat strong {
+    font-size: 28px;
+}
+
+.about p {
+    margin-top: 8px;
+    color: var(--yt-text-muted);
+}
+
+footer {
+    text-align: center;
+    color: var(--yt-text-muted);
+    padding: 24px 4%;
+    font-size: 13px;
+}
+
+@media (max-width: 900px) {
+    nav {
+        display: none;
+    }
+
+    .shorten-row,
+    .result,
+    .section-head {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .history-controls {
+        min-width: 0;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 96%;
+    }
+
+    .card {
+        padding: 18px;
+    }
+
+    .hero h1 {
+        font-size: 25px;
+    }
+
+    .history-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .result-actions,
+    .quick-actions {
+        width: 100%;
+    }
+
+    button {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ---------- Auth pages (login/register) ---------- */
+.auth-card {
+    max-width: 440px;
+    margin: 40px auto;
+    text-align: left;
+}
+
+.auth-card h1 {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.auth-card > p {
+    color: var(--yt-text-muted);
+    margin-bottom: 20px;
+}
+
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auth-form label {
+    font-weight: 600;
+    font-size: 13px;
+    color: #43506b;
+    margin-top: 6px;
+}
+
+.auth-form button {
+    width: 100%;
+    max-width: 100%;
+    margin-top: 8px;
+}
+
+.auth-switch {
+    margin-top: 16px;
+    color: var(--yt-text-muted);
+}
+
+.nav-username {
+    color: #fff;
+    font-weight: 600;
+    padding: 8px 4px;
+}
+
+/* ---------- Dashboard: create tabs ---------- */
+.create-tabs {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    --btn-bg-top: #ff2b2b;
+    --btn-bg-bottom: var(--yt-red);
+    --btn-edge: var(--yt-red-darker);
+    color: #fff;
+}
+
+.tab-btn.active {
+    --btn-bg-top: #ff2b2b;
+    --btn-bg-bottom: var(--yt-red);
+    --btn-edge: var(--yt-red-darker);
+    color: #fff;
+}
+
+.create-form {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.create-form input[type="file"] {
+    padding: 10px;
+}
+
+.create-form select {
+    max-width: 160px;
+    height: 46px;
+    padding: 0 10px;
+}
+
+.qr-preview {
+    width: 90px;
+    height: 90px;
+    border-radius: 8px;
+    border: 1px solid var(--yt-gray-border);
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+}
+
+.qr-thumb {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    border: 1px solid var(--yt-gray-border);
+}
+
+/* ---------- Admin dashboard ---------- */
+.admin-stats-grid {
+    grid-template-columns: repeat(5, 1fr);
+}
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    margin-top: 18px;
+}
+
+.chart-box {
+    position: relative;
+    background: #fafafa;
+    border: 1px solid var(--yt-gray-border);
+    border-radius: 10px;
+    padding: 14px;
+    min-height: 280px;
+}
+
+.chart-box.full-width {
+    grid-column: 1 / -1;
+}
+
+select.visibility-select,
+select.admin-visibility-select,
+select.role-select {
+    padding: 8px 10px;
+    height: auto;
+    border-radius: 6px;
+    border: 1px solid #d9d9d9;
+    background: #fff;
+}
+
+@media (max-width: 900px) {
+    .admin-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- AI features ---------- */
+.ai-assistant-form {
+    display: flex;
+    gap: 10px;
+}
+
+.ai-assistant-form input {
+    flex: 1;
+}
+
+.ai-answer {
+    margin-top: 14px;
+    padding: 16px 18px;
+    background: #f8f9ff;
+    border: 1px solid #dde3f8;
+    border-left: 4px solid #4b55e8;
+    border-radius: 10px;
+    line-height: 1.7;
+    font-size: 14.5px;
+}
+
+/* ChatGPT-style formatting inside the answer box */
+.ai-answer p { margin: 0 0 8px; }
+.ai-answer p:last-child { margin-bottom: 0; }
+.ai-answer h3, .ai-answer h4 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 12px 0 6px;
+    color: #1a1a2e;
+}
+.ai-answer ul, .ai-answer ol {
+    margin: 6px 0 10px 18px;
+    padding: 0;
+}
+.ai-answer li {
+    margin-bottom: 5px;
+    line-height: 1.6;
+}
+.ai-answer code {
+    background: #eef0fb;
+    border: 1px solid #d0d5f0;
+    border-radius: 4px;
+    padding: 1px 6px;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    color: #4b55e8;
+}
+.ai-code-block {
+    background: #1a1a2e;
+    color: #e8e8f8;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-family: "Courier New", monospace;
+    font-size: 13px;
+    line-height: 1.5;
+}
+.ai-code-block code {
+    background: none;
+    border: none;
+    padding: 0;
+    color: inherit;
+    font-size: inherit;
+}
+.ai-answer strong { color: #1a1a2e; font-weight: 700; }
+.ai-answer em { color: #606060; font-style: italic; }
+.ai-thinking { color: #8899cc; font-style: italic; }
+
+.ai-badge {
+    display: inline-block;
+    font-size: 0.85em;
+    white-space: nowrap;
+    cursor: help;
+}
+
+.ai-badge-suggest {
+    color: var(--yt-text-muted);
+}
+
+.ai-insights-list {
+    margin: 10px 0 0;
+    padding-left: 20px;
+    line-height: 1.7;
+}

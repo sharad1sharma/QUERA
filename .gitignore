@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+backend/database/*.db
+backend/database/*.csv
+database/*.db
+.venv/
+venv/
+.vercel
+.env
+uploads/images/*
+uploads/videos/*
+uploads/files/*
+!uploads/images/.gitkeep
+!uploads/videos/.gitkeep
+!uploads/files/.gitkeep
+qr_codes/*
+!qr_codes/.gitkeep

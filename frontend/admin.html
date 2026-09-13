@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - URL Shortener</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script>
+        window.chartJsReady = new Promise((resolve, reject) => {
+            const sources = [
+                "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js",
+                "https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js",
+                "https://unpkg.com/chart.js@4.4.4/dist/chart.umd.min.js"
+            ];
+            function tryLoad(i) {
+                if (i >= sources.length) {
+                    reject(new Error("Chart.js could not be loaded from any CDN - check your internet connection."));
+                    return;
+                }
+                const script = document.createElement("script");
+                script.src = sources[i];
+                script.onload = () => resolve();
+                script.onerror = () => tryLoad(i + 1);
+                document.head.appendChild(script);
+            }
+            tryLoad(0);
+        });
+    </script>
+</head>
+<body>
+<header class="topbar">
+    <div class="brand"><span>🛠️</span> ADMIN DASHBOARD</div>
+    <nav id="mainNav">
+        <a href="/">Home</a>
+        <span id="navAuthSlot"></span>
+    </nav>
+</header>
+
+<main class="container">
+    <section class="card">
+        <h1>🛠️ Admin Dashboard</h1>
+        <p>Global overview and management for all users and resources.</p>
+    </section>
+
+    <section id="stats" class="stats-grid admin-stats-grid">
+        <div class="stat card"><span>👥</span><div><small>Users</small><strong id="statUsers">0</strong></div></div>
+        <div class="stat card"><span>📦</span><div><small>Resources</small><strong id="statResources">0</strong></div></div>
+        <div class="stat card"><span>🔗</span><div><small>URLs</small><strong id="statUrls">0</strong></div></div>
+        <div class="stat card"><span>🖼️</span><div><small>Images</small><strong id="statImages">0</strong></div></div>
+        <div class="stat card"><span>🎬</span><div><small>Videos</small><strong id="statVideos">0</strong></div></div>
+        <div class="stat card"><span>📄</span><div><small>Files</small><strong id="statFiles">0</strong></div></div>
+        <div class="stat card"><span>🌐</span><div><small>Public</small><strong id="statPublic">0</strong></div></div>
+        <div class="stat card"><span>🔒</span><div><small>Private</small><strong id="statPrivate">0</strong></div></div>
+        <div class="stat card"><span>📱</span><div><small>QR Codes</small><strong id="statQr">0</strong></div></div>
+        <div class="stat card"><span>🖱️</span><div><small>Total Clicks</small><strong id="statClicks">0</strong></div></div>
+    </section>
+
+    <section class="card">
+        <h2>📈 Analytics</h2>
+        <div class="charts-grid">
+            <div class="chart-box full-width"><canvas id="timelineChart"></canvas></div>
+            <div class="chart-box"><canvas id="typeChart"></canvas></div>
+            <div class="chart-box"><canvas id="visibilityChart"></canvas></div>
+            <div class="chart-box"><canvas id="userChart"></canvas></div>
+            <div class="chart-box"><canvas id="riskChart"></canvas></div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>🤖 AI Insights</h2>
+        <p>Generated from this app's own stored data - never invented.</p>
+        <ul id="aiInsightsList" class="ai-insights-list"><li>Loading…</li></ul>
+    </section>
+
+    <section class="card">
+        <div class="section-head">
+            <div>
+                <h2>👥 Users</h2>
+                <p>All registered accounts.</p>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr><th>#</th><th>Username</th><th>Email</th><th>Role</th><th>Joined</th><th>Actions</th></tr>
+                </thead>
+                <tbody id="userBody"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <div class="section-head">
+            <div>
+                <h2>🗂️ All Resources</h2>
+                <p>Every URL, image, video and file created by any user.</p>
+            </div>
+            <div class="history-controls">
+                <input id="searchInput" placeholder="Search by owner, name or short code...">
+                <button id="refreshBtn">↻ Refresh</button>
+            </div>
+        </div>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th><th>Owner</th><th>Type</th><th>Name / Destination</th>
+                        <th>Short URL</th><th>Visibility</th><th>Clicks</th><th>Created</th><th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="resourceBody"></tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="js/auth-common.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
