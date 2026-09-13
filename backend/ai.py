@@ -42,10 +42,14 @@ def is_owner_or_admin(resource_row, user):
 # Optional external AI provider hook (used only by the Usage Assistant)
 # ---------------------------------------------------------------------------
 
+_last_ai_error = None  # Store last error for debugging
+
 def call_external_ai(prompt):
     """Best-effort call to Cohere AI for free-form questions.
     Returns None on ANY failure so the caller always has a safe fallback."""
+    global _last_ai_error
     if not AI_API_KEY:
+        _last_ai_error = "AI_API_KEY is not set"
         return None
     try:
         import cohere
@@ -60,6 +64,7 @@ def call_external_ai(prompt):
                     {"role": "user", "content": prompt},
                 ]
             )
+            _last_ai_error = None
             return response.message.content[0].text or None
         except AttributeError:
             # v4 style fallback
@@ -68,10 +73,33 @@ def call_external_ai(prompt):
                 message=prompt,
                 model="command-r-plus-08-2024",
             )
+            _last_ai_error = None
             return response.text or None
     except Exception as e:
-        print(f"Cohere API Error: {e}")
+        _last_ai_error = f"{type(e).__name__}: {e}"
+        print(f"[AI] Cohere API Error: {_last_ai_error}")
         return None
+
+
+@ai_api.get("/debug")
+def ai_debug():
+    """Debug endpoint — shows cohere install status and last API error."""
+    cohere_version = None
+    try:
+        import cohere
+        cohere_version = getattr(cohere, "__version__", "installed (version unknown)")
+    except ImportError:
+        cohere_version = "NOT INSTALLED"
+
+    test_result = call_external_ai("Say hello in one word.")
+    return jsonify({
+        "ai_api_key_set": bool(AI_API_KEY),
+        "ai_api_key_prefix": AI_API_KEY[:12] + "..." if AI_API_KEY else None,
+        "cohere_version": cohere_version,
+        "last_error": _last_ai_error,
+        "test_response": test_result,
+    })
+
 
 
 # ---------------------------------------------------------------------------
