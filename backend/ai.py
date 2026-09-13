@@ -45,36 +45,41 @@ def is_owner_or_admin(resource_row, user):
 _last_ai_error = None  # Store last error for debugging
 
 def call_external_ai(prompt):
-    """Best-effort call to Cohere AI for free-form questions.
+    """Call Cohere REST API directly via urllib — no SDK needed.
     Returns None on ANY failure so the caller always has a safe fallback."""
     global _last_ai_error
     if not AI_API_KEY:
         _last_ai_error = "AI_API_KEY is not set"
         return None
     try:
-        import cohere
-        # Support both Cohere SDK v4 and v5
-        try:
-            # v5+ style (ClientV2)
-            client = cohere.ClientV2(AI_API_KEY)
-            response = client.chat(
-                model="command-r-plus-08-2024",
-                messages=[
-                    {"role": "system", "content": ASSISTANT_CONTEXT},
-                    {"role": "user", "content": prompt},
-                ]
-            )
+        import json
+        import urllib.request
+
+        payload = json.dumps({
+            "model": "command-r-plus-08-2024",
+            "messages": [
+                {"role": "system", "content": ASSISTANT_CONTEXT},
+                {"role": "user", "content": prompt},
+            ]
+        }).encode("utf-8")
+
+        req = urllib.request.Request(
+            "https://api.cohere.com/v2/chat",
+            data=payload,
+            headers={
+                "Authorization": f"Bearer {AI_API_KEY}",
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            method="POST"
+        )
+
+        with urllib.request.urlopen(req, timeout=15) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+            text = data["message"]["content"][0]["text"]
             _last_ai_error = None
-            return response.message.content[0].text or None
-        except AttributeError:
-            # v4 style fallback
-            client = cohere.Client(AI_API_KEY)
-            response = client.chat(
-                message=prompt,
-                model="command-r-plus-08-2024",
-            )
-            _last_ai_error = None
-            return response.text or None
+            return text or None
+
     except Exception as e:
         _last_ai_error = f"{type(e).__name__}: {e}"
         print(f"[AI] Cohere API Error: {_last_ai_error}")
@@ -83,21 +88,14 @@ def call_external_ai(prompt):
 
 @ai_api.get("/debug")
 def ai_debug():
-    """Debug endpoint — shows cohere install status and last API error."""
-    cohere_version = None
-    try:
-        import cohere
-        cohere_version = getattr(cohere, "__version__", "installed (version unknown)")
-    except ImportError:
-        cohere_version = "NOT INSTALLED"
-
+    """Debug endpoint — shows Cohere config and last API error."""
     test_result = call_external_ai("Say hello in one word.")
     return jsonify({
         "ai_api_key_set": bool(AI_API_KEY),
         "ai_api_key_prefix": AI_API_KEY[:12] + "..." if AI_API_KEY else None,
-        "cohere_version": cohere_version,
         "last_error": _last_ai_error,
         "test_response": test_result,
+        "working": test_result is not None,
     })
 
 
