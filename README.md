@@ -222,7 +222,8 @@ Open `http://localhost:5000`.
 
 ## Screenshots
 
-_Add screenshots of the home page, dashboard, and admin dashboard here after running the app locally._
+<img width="1512" height="810" alt="Screenshot 2026-09-12 223206" src="https://github.com/user-attachments/assets/7d968542-f498-42f7-a24a-1923c66e5c6f" />
+
 
 ## Future Improvements
 
