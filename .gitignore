@@ -15,3 +15,5 @@ uploads/files/*
 !uploads/files/.gitkeep
 qr_codes/*
 !qr_codes/.gitkeep
+
+.vercel

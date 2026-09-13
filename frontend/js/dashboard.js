@@ -246,20 +246,8 @@ document.getElementById("aiAssistantForm").addEventListener("submit", async (eve
 
 // --- List / manage resources ---------------------------------------------
 
-const RISK_ICONS = { low: "🟢", medium: "🟡", high: "🔴" };
 
-function aiBadge(item) {
-    if (item.resource_type === "url" && item.ai_risk_level) {
-        const icon = RISK_ICONS[item.ai_risk_level] || "⚪";
-        const reason = escapeHtml(item.ai_risk_reason || "");
-        return `<span class="ai-badge" title="${reason}">${icon} ${item.ai_risk_level} risk</span>`;
-    }
-    if (item.ai_privacy_suggestion && item.ai_privacy_suggestion !== item.visibility) {
-        const reason = escapeHtml(item.ai_privacy_reason || "");
-        return `<span class="ai-badge ai-badge-suggest" title="${reason}">💡 suggests ${item.ai_privacy_suggestion}</span>`;
-    }
-    return "-";
-}
+
 
 async function loadResources() {
     const search = encodeURIComponent(document.getElementById("searchInput").value.trim());
@@ -289,7 +277,6 @@ async function loadResources() {
                     </select>
                 </td>
                 <td>${item.click_count}</td>
-                <td>${aiBadge(item)}</td>
                 <td>${item.qr_url ? `<a href="${item.qr_url}" target="_blank"><img class="qr-thumb" src="${item.qr_url}" alt="QR"></a>` : "-"}</td>
                 <td>
                     <div class="actions">
@@ -302,7 +289,7 @@ async function loadResources() {
         });
 
         if (rows.length === 0) {
-            body.innerHTML = `<tr><td colspan="9">No resources yet. Create one above.</td></tr>`;
+            body.innerHTML = `<tr><td colspan="8">No resources yet. Create one above.</td></tr>`;
         }
 
         document.getElementById("statResources").textContent = rows.length;

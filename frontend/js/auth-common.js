@@ -1,8 +1,9 @@
 // Shared across every page: figures out the API base URL and exposes small
 // helpers for checking who is logged in and guarding pages.
 const isLocalDevServer = window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1";
-const isServedByBackend = window.location.port === "5000" || (!isLocalDevServer && window.location.protocol.startsWith("http"));
-const API = isServedByBackend ? "/api" : "http://localhost:5000/api";
+// Always use relative /api when the page is served over HTTP/HTTPS (covers Vercel, any server).
+// Only fall back to absolute localhost URL when opening the HTML file directly (file:// protocol).
+const API = window.location.protocol.startsWith("http") ? "/api" : "http://localhost:5000/api";
 
 async function fetchCurrentUser() {
     try {
