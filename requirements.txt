@@ -3,9 +3,4 @@ Flask-Cors>=4.0.0
 python-dotenv>=1.0.0
 qrcode[pil]>=7.4.2
 Pillow>=10.0.0
-
-# Optional: only needed if you set AI_API_KEY in .env to have the AI Usage
-# Assistant answer with a real model instead of its built-in FAQ matcher.
-# Everything else in the AI layer (risk analysis, privacy suggestions,
-# analytics insights) works with zero extra dependencies.
-# anthropic>=0.34.0
+cohere>=5.0.0

@@ -43,19 +43,32 @@ def is_owner_or_admin(resource_row, user):
 # ---------------------------------------------------------------------------
 
 def call_external_ai(prompt):
-    """Best-effort call to an external AI provider for free-form questions.
-    Returns None on ANY failure (no key, package not installed, network
-    error, bad response) so the caller always has a safe fallback."""
+    """Best-effort call to Cohere AI for free-form questions.
+    Returns None on ANY failure so the caller always has a safe fallback."""
     if not AI_API_KEY:
         return None
     try:
         import cohere
-        client = cohere.Client(AI_API_KEY)
-        response = client.chat(
-            message=prompt,
-            model="command-r-plus-08-2024", # A fast and capable Cohere model
-        )
-        return response.text or None
+        # Support both Cohere SDK v4 and v5
+        try:
+            # v5+ style (ClientV2)
+            client = cohere.ClientV2(AI_API_KEY)
+            response = client.chat(
+                model="command-r-plus-08-2024",
+                messages=[
+                    {"role": "system", "content": ASSISTANT_CONTEXT},
+                    {"role": "user", "content": prompt},
+                ]
+            )
+            return response.message.content[0].text or None
+        except AttributeError:
+            # v4 style fallback
+            client = cohere.Client(AI_API_KEY)
+            response = client.chat(
+                message=prompt,
+                model="command-r-plus-08-2024",
+            )
+            return response.text or None
     except Exception as e:
         print(f"Cohere API Error: {e}")
         return None
@@ -136,7 +149,7 @@ def assistant():
     if len(question) > 500:
         return jsonify({"error": "Question is too long (max 500 characters)."}), 400
 
-    external = call_external_ai(f"{ASSISTANT_CONTEXT}\n\nUser question: {question}")
+    external = call_external_ai(question)
     if external:
         return jsonify({"data": {"answer": external, "source": "ai"}})
 
