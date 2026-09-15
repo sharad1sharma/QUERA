@@ -8,10 +8,10 @@ services:
       - key: SECRET_KEY
         generateValue: true
       - key: ADMIN_EMAIL
-        value: tech32026@gmail.com
+        value: tech3332026@gmail.com
       - key: ADMIN_USERNAME
-        value: Tech_CODERZ
+        value: Tech_CODERZ_3
       - key: ADMIN_PASSWORD
-        value: ssp@2026
+        value: ssp@32026
       - key: MAX_UPLOAD_MB
         value: "50"
