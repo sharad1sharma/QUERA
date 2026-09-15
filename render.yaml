@@ -1,9 +1,7 @@
 services:
   - type: web
     name: quera
-    env: python
-    region: singapore
-    plan: free
+    runtime: python
     buildCommand: pip install -r requirements.txt
     startCommand: gunicorn --chdir backend app:app
     envVars:
