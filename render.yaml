@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: quera
+    env: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn --chdir backend app:app
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@example.com
+      - key: ADMIN_PASSWORD
+        value: AdminPassword123!
+      - key: MAX_UPLOAD_MB
+        value: "50"
