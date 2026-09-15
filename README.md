@@ -136,7 +136,7 @@ database.py (SQLite: users, resources [+ ai_risk_level, ai_risk_reason,
 ## Project Structure
 
 ```
-URL_SHORTERNED_-main/
+QUERA-main/
 ├── api/
 │   └── index.py            # Vercel serverless entrypoint
 ├── backend/
