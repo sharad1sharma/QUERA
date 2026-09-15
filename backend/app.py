@@ -73,13 +73,7 @@ app.register_blueprint(ai_api, url_prefix="/api/ai")
 
 
 def ensure_admin_from_env():
-    """Create the initial admin account from env vars if it doesn't exist yet.
-
-    No credentials are hard-coded: set ADMIN_EMAIL / ADMIN_USERNAME /
-    ADMIN_PASSWORD in your .env file (see .env.example). If they are not set,
-    no admin account is created automatically and one can be promoted later
-    via the database or another admin.
-    """
+    """Create or update the initial admin account from env vars on startup."""
     email = os.environ.get("ADMIN_EMAIL")
     username = os.environ.get("ADMIN_USERNAME", "admin")
     password = os.environ.get("ADMIN_PASSWORD")
@@ -87,17 +81,24 @@ def ensure_admin_from_env():
     if not email or not password:
         return
 
-    if get_user_by_email(email.lower()):
-        return
-
-    from datetime import datetime, timezone
-    create_user(
-        username=username,
-        email=email.lower(),
-        password_hash=generate_password_hash(password),
-        role="admin",
-        created_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
-    )
+    existing = get_user_by_email(email.lower())
+    if existing:
+        from database import get_connection
+        conn = get_connection()
+        conn.execute(
+            "UPDATE users SET password_hash = ?, role = 'admin', username = ? WHERE lower(email) = ?",
+            (generate_password_hash(password), username, email.lower())
+        )
+        conn.commit()
+    else:
+        from datetime import datetime, timezone
+        create_user(
+            username=username,
+            email=email.lower(),
+            password_hash=generate_password_hash(password),
+            role="admin",
+            created_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        )
 
 
 @app.route("/")
