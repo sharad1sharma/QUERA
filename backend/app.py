@@ -62,7 +62,7 @@ _cors_origins_env = os.environ.get("CORS_ORIGINS")
 if _cors_origins_env:
     cors_origins = [origin.strip() for origin in _cors_origins_env.split(",") if origin.strip()]
 else:
-    cors_origins = re.compile(r"^https?://(localhost|127\.0\.0\.1|192\.168\.\d+\.\d+|10\.\d+\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$")
+    cors_origins = re.compile(r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$")
 
 CORS(app, origins=cors_origins, supports_credentials=True)
 
@@ -134,15 +134,9 @@ def resource_access(short_code):
 @app.route("/<short_code>", methods=["GET"])
 def redirect_url(short_code):
     """Legacy route kept for backward compatibility with links created
-    before /s/<code> existed - same handler as /s/<code>, while also
-    serving clean HTML page URLs (e.g. /login, /dashboard, /admin)."""
+    before /s/<code> existed - same handler as /s/<code>."""
     if short_code in RESERVED_PATHS:
         abort(404)
-
-    html_file = FRONTEND_DIR / f"{short_code}.html"
-    if html_file.exists():
-        return send_from_directory(FRONTEND_DIR, f"{short_code}.html")
-
     return redirect_short_url(short_code)
 
 
@@ -155,8 +149,3 @@ else:
     # Also run under `flask run` / gunicorn / Vercel, not just `python app.py`
     init_db()
     ensure_admin_from_env()
-
-
-
-
-

@@ -101,12 +101,10 @@ async function loadHistory() {
                     ${truncate(item.original_url, 45)}
                 </td>
                 <td>
-                    <div class="short-url-cell">
-                        <a href="${safeShortUrl}" target="_blank" rel="noopener noreferrer">
-                            ${escapeHtml(item.short_code)}
-                        </a>
-                        <button type="button" class="copy-btn" data-copy="${escapeHtml(item.short_url)}" title="Copy short URL">📋 Copy</button>
-                    </div>
+                    <a href="${safeShortUrl}" target="_blank" rel="noopener noreferrer">
+                        ${escapeHtml(item.short_code)}
+                    </a>
+                    <button type="button" data-copy="${escapeHtml(item.short_url)}">📋</button>
                 </td>
                 <td>${formatDate(item.created_at)}</td>
                 <td>${item.click_count}</td>

@@ -86,13 +86,10 @@ def is_owner_or_admin(resource_row, user):
     return resource_row["owner_id"] == user["id"]
 
 
-RESERVED_CODES = {"api", "favicon.ico", "s", "css", "js", "qr_codes", "admin", "dashboard", "login", "register", "index"}
-
-
 def unique_short_code():
     for _ in range(10):
         code = generate_short_code()
-        if code.lower() not in RESERVED_CODES and not get_resource_by_code(code):
+        if not get_resource_by_code(code):
             return code
     return None
 
@@ -363,7 +360,7 @@ NOT_FOUND_PAGE = """
 <body>
     <h1>Short URL not found</h1>
     <p>This link does not exist or was deleted.</p>
-    <p><a href="/">Back to QUERA</a></p>
+    <p><a href="/">Back to URL Shortener</a></p>
 </body>
 </html>
 """

@@ -269,12 +269,7 @@ async function loadResources() {
                 <td>${index + 1}</td>
                 <td>${TYPE_ICONS[item.resource_type] || ""} ${item.resource_type}</td>
                 <td title="${label}">${label.length > 40 ? label.slice(0, 40) + "..." : label}</td>
-                <td>
-                    <div class="short-url-cell">
-                        <a href="${item.short_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.short_url)}</a>
-                        <button type="button" class="copy-btn" data-copy="${escapeHtml(item.short_url)}" title="Copy link">📋 Copy</button>
-                    </div>
-                </td>
+                <td><a href="${item.short_url}" target="_blank" rel="noopener noreferrer">${escapeHtml(item.short_url)}</a></td>
                 <td>
                     <select class="visibility-select" data-id="${item.id}">
                         <option value="public" ${item.visibility === "public" ? "selected" : ""}>🌐 Public</option>
@@ -332,11 +327,7 @@ document.getElementById("resourceBody").addEventListener("click", async (event) 
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
 
-    if (target.dataset.copy) {
-        navigator.clipboard.writeText(target.dataset.copy)
-            .then(() => showMessage("Short URL copied!"))
-            .catch(() => showMessage("Could not copy.", true));
-    } else if (target.dataset.edit) {
+    if (target.dataset.edit) {
         await editResource(Number(target.dataset.edit));
     } else if (target.dataset.delete) {
         await deleteResource(Number(target.dataset.delete));

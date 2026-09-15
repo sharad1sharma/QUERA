@@ -390,37 +390,23 @@ td a:hover {
     gap: 6px;
 }
 
-.short-url-cell {
-    display: inline-flex;
-    align-items: center;
-    gap: 14px;
-    white-space: nowrap;
-}
-
-.short-url-cell a {
-    min-width: 75px;
-    display: inline-block;
-}
-
 /* Compact action buttons inside tables — same 3D system, smaller footprint.
    These are intentionally exempt from the site-wide fixed button width so
    they still fit neatly inside table rows. */
-.actions button,
-button.copy-btn {
-    height: 32px;
+.actions button {
+    height: 36px;
     width: auto;
     min-width: 0;
     max-width: none;
-    padding: 0 10px;
-    font-size: 12.5px;
+    padding: 0 14px;
+    font-size: 13px;
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.4),
         0 2px 0 var(--btn-edge),
         0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.actions button:hover,
-button.copy-btn:hover {
+.actions button:hover {
     box-shadow:
         inset 0 1px 0 rgba(255, 255, 255, 0.4),
         0 3px 0 var(--btn-edge),
