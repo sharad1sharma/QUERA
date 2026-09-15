@@ -1,9 +1,14 @@
+import io
+import os
+import socket
 import mimetypes
+import qrcode
 from datetime import datetime, timezone
+from urllib.parse import urlparse
 
 from flask import (
     Blueprint, jsonify, request, redirect, render_template_string,
-    send_file, session, abort
+    send_file, session, abort, has_request_context
 )
 from werkzeug.exceptions import RequestEntityTooLarge
 
@@ -31,8 +36,35 @@ def now():
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
+def _get_local_ip():
+    try:
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+        s.close()
+        return ip
+    except Exception:
+        return "127.0.0.1"
+
+
 def build_short_url(short_code):
-    return request.host_url.rstrip("/") + "/s/" + short_code
+    base_url = os.environ.get("BASE_URL")
+    if base_url:
+        return base_url.rstrip("/") + "/s/" + short_code
+
+    if has_request_context():
+        host_url = request.host_url.rstrip("/")
+        if "localhost" in host_url or "127.0.0.1" in host_url:
+            local_ip = _get_local_ip()
+            if local_ip and local_ip != "127.0.0.1":
+                parsed = urlparse(host_url)
+                port_str = f":{parsed.port}" if parsed.port else ""
+                return f"{parsed.scheme}://{local_ip}{port_str}/s/{short_code}"
+        return host_url + "/s/" + short_code
+    else:
+        local_ip = _get_local_ip()
+        port = os.environ.get("PORT", "5000")
+        return f"http://{local_ip}:{port}/s/{short_code}"
 
 
 def resource_to_public_dict(row):
@@ -54,10 +86,13 @@ def is_owner_or_admin(resource_row, user):
     return resource_row["owner_id"] == user["id"]
 
 
+RESERVED_CODES = {"api", "favicon.ico", "s", "css", "js", "qr_codes", "admin", "dashboard", "login", "register", "index"}
+
+
 def unique_short_code():
     for _ in range(10):
         code = generate_short_code()
-        if not get_resource_by_code(code):
+        if code.lower() not in RESERVED_CODES and not get_resource_by_code(code):
             return code
     return None
 
@@ -302,14 +337,12 @@ def get_qr(short_code):
     # Generate QR on-the-fly in memory — works on Vercel serverless where
     # /tmp is ephemeral and QR files saved during a previous invocation
     # are no longer present. This is always fresh and needs no disk I/O.
-    import io
-    import qrcode as _qrcode
     target_url = build_short_url(short_code)
-    img = _qrcode.make(target_url)
+    img = qrcode.make(target_url)
     buf = io.BytesIO()
-    img.save(buf, format="PNG")
+    img.save(buf, "PNG")
     buf.seek(0)
-    return send_file(buf, mimetype="image/png")
+    return send_file(buf, mimetype="image/png", download_name=f"{short_code}.png")
 
 
 # ---------------------------------------------------------------------------
@@ -330,7 +363,7 @@ NOT_FOUND_PAGE = """
 <body>
     <h1>Short URL not found</h1>
     <p>This link does not exist or was deleted.</p>
-    <p><a href="/">Back to URL Shortener</a></p>
+    <p><a href="/">Back to QUERA</a></p>
 </body>
 </html>
 """

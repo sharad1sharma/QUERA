@@ -1,8 +1,12 @@
 __pycache__/
 *.pyc
 backend/database/*.db
+backend/database/*.db-wal
+backend/database/*.db-shm
 backend/database/*.csv
 database/*.db
+database/*.db-wal
+database/*.db-shm
 .venv/
 venv/
 .vercel
