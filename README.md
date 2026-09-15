@@ -1,4 +1,4 @@
-# URL Shortener — with Auth, QR Codes & Media Sharing
+# QUERA — with Auth, QR Codes & Media Sharing
 
 👨‍💻 About Me: Hi, I'm SHARAD SHARMA — a Computer Science Engineering student, Python Developer, and aspiring Backend & AI Engineer. ⚡
 
