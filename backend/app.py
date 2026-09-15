@@ -81,24 +81,29 @@ def ensure_admin_from_env():
     if not email or not password:
         return
 
-    existing = get_user_by_email(email.lower())
-    if existing:
-        from database import get_connection
-        conn = get_connection()
-        conn.execute(
-            "UPDATE users SET password_hash = ?, role = 'admin', username = ? WHERE lower(email) = ?",
-            (generate_password_hash(password), username, email.lower())
-        )
+    email = email.strip().lower()
+    username = username.strip()
+
+    from database import get_connection
+    from datetime import datetime, timezone
+
+    with get_connection() as conn:
+        # Check if matching user exists
+        user = conn.execute("SELECT * FROM users WHERE lower(email) = ? OR username = ? LIMIT 1", (email, username)).fetchone()
+
+        if user:
+            conn.execute(
+                "UPDATE users SET username = ?, email = ?, password_hash = ?, role = 'admin' WHERE id = ?",
+                (username, email, generate_password_hash(password), user["id"])
+            )
+        else:
+            # If creating new admin, remove any old user with same email or username to avoid unique constraint collision
+            conn.execute("DELETE FROM users WHERE lower(email) = ? OR username = ?", (email, username))
+            conn.execute(
+                "INSERT INTO users (username, email, password_hash, role, created_at) VALUES (?, ?, ?, 'admin', ?)",
+                (username, email, generate_password_hash(password), datetime.now(timezone.utc).isoformat(timespec="seconds"))
+            )
         conn.commit()
-    else:
-        from datetime import datetime, timezone
-        create_user(
-            username=username,
-            email=email.lower(),
-            password_hash=generate_password_hash(password),
-            role="admin",
-            created_at=datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        )
 
 
 @app.route("/")
