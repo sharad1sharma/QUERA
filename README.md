@@ -222,7 +222,8 @@ Open `http://localhost:5000`.
 
 ## Screenshots
 
-<img width="1512" height="810" alt="Screenshot 2026-09-12 223206" src="https://github.com/user-attachments/assets/7d968542-f498-42f7-a24a-1923c66e5c6f" />
+<img width="1532" height="766" alt="Screenshot 2026-09-15 112630" src="https://github.com/user-attachments/assets/c2dc5f96-8cc6-4dfc-9fd7-3fa46ffa0578" />
+
 
 
 ## Future Improvements
