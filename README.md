@@ -108,7 +108,7 @@ insights are built only from real stored data.
 | QR codes   | `qrcode` + Pillow                |
 | Frontend   | HTML, CSS, vanilla JavaScript   |
 | Charts     | Chart.js (via CDN)              |
-| Deployment | Vercel-compatible (`api/index.py`, `vercel.json`) |
+| Deployment | Render-compatible (`api/index.py`, `render.json`) |
 
 ## Architecture
 
