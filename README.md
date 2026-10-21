@@ -1,3 +1,5 @@
+<img width="1532" height="766" alt="Screenshot 2026-09-15 112630" src="https://github.com/user-attachments/assets/7c81ea30-c202-4277-bc28-63b73af61eb7" />
+
 # QUERA — with Auth, QR Codes & Media Sharing
 
 👨‍💻 About Me: Hi, I'm SHARAD SHARMA — a Computer Science Engineering student, Python Developer, and aspiring Backend & AI Engineer. ⚡
